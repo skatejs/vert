@@ -12,17 +12,24 @@
   "scripts": {
     "build": "nwb build-web-module",
     "clean": "nwb clean-module",
+    "serve": "nwb serve-web-app demo/index.js --reload",
     "test": "nwb test",
     "test:coverage": "nwb test --coverage",
     "test:watch": "nwb test --server"
   },
   "dependencies": {
+    "highlight.js": "^9.9.0",
+    "marked": "^0.3.6",
+    "page": "^1.7.1",
+    "skatejs": "^4.6.6"
   },
   "devDependencies": {
-    "nwb": "0.15.x"
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "nwb": "0.15.x",
+    "skatejs-web-components": "^5.1.0"
   },
-  "author": "",
-  "homepage": "",
+  "author": "Trey Shugart <treshugart@gmail.com>",
+  "homepage": "https://github.com/skatejs/vert",
   "license": "MIT",
-  "repository": ""
+  "repository": "https://github.com/skatejs/vert"
 }
