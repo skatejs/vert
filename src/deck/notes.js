@@ -1,5 +1,6 @@
-import { ComponentNext } from '../_';
+import { ComponentNext, marked } from '../_';
 import { define, h, prop } from 'skatejs';
+import { parse } from '../markdown';
 import styles from '../markdown/styles';
 
 export default define(class extends ComponentNext() {
@@ -16,6 +17,6 @@ export default define(class extends ComponentNext() {
         }
         ${styles}
       `}</style>
-    ].concat(notes.map(n => <p ref={e => (e.innerHTML = marked(n, renderer))} />));
+    ].concat(notes.map(n => <p ref={e => (e.innerHTML = parse(n))} />));
   }
 });

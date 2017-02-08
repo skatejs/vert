@@ -12,15 +12,13 @@ const App = define(class extends Component {
           font-family: Helvetica;
         }
         vert-deck {
-          background-color: #4E598C;
-          color: #fff;
-          height: 200px;
+          height: 400px;
         }
         vert-markdown {
           display: block;
         }
         vert-slide {
-          padding: 20px;
+          padding: 40px 20px 20px 20px;
         }
       `}</style>,
       <vert-route />,

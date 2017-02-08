@@ -3,18 +3,20 @@ import { define, h, prop, props } from 'skatejs';
 import { Store } from '../store';
 import Notes from './notes';
 import Progress from './progress';
+import Time from './time';
+import Timer from './timer';
 
 const keys = {
   37 (elem, e) {
-    const { actualSelected, children } = elem;
+    const { actualSelected, slides } = elem;
     props(elem, {
-      selected: actualSelected > 1 ? actualSelected - 1 : children.length
+      selected: actualSelected > 1 ? actualSelected - 1 : slides.length
     });
   },
   39 (elem, e) {
-    const { actualSelected, children } = elem;
+    const { actualSelected, slides } = elem;
     props(elem, {
-      selected: actualSelected < children.length ? actualSelected + 1 : 1
+      selected: actualSelected < slides.length ? actualSelected + 1 : 1
     });
   }
 };
@@ -24,14 +26,17 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
   static props = {
     focused: prop.boolean({ attribute: true }),
     id: prop.string({ attribute: true }),
-    selected: prop.number({ attribute: true })
+    mouseX: prop.number(),
+    mouseY: prop.number(),
+    selected: prop.number({ attribute: true }),
+    slides: prop.array()
   }
   get actualSelected () {
     return this.selected || Store.get('currentSlide', this) || 1;
   }
   get slide () {
-    const { actualSelected, children } = this;
-    return children[actualSelected - 1];
+    const { actualSelected, slides } = this;
+    return slides[actualSelected - 1];
   }
   handleClick = e => {
     e.currentTarget.focus();
@@ -47,11 +52,29 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       handler(this, e);
     }
   }
-  renderCallback ({ actualSelected, children, handleClick, handleKeydown, handleRef, id }) {
+  handleMousemove = e => {
+    const { pageX: mouseX, pageY: mouseY } = e;
+    props(this, { mouseX, mouseY });
+  }
+  childrenChangedCallback () {
+    props(this, { slides: Array.from(this.children) });
+  }
+  renderCallback ({
+    actualSelected,
+    handleClick,
+    handleKeydown,
+    handleMousemove,
+    handleRef,
+    id,
+    mouseX,
+    mouseY,
+    slides
+  }) {
     const { notes } = this.slide || {};
     return [
       <style>{`
         :host {
+          cursor: none;
           display: flex;
           flex-direction: column;
         }
@@ -64,6 +87,30 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
           right: 10px;
           width: 300px;
         }
+        .cursor {
+          background-color: black;
+          border-radius: 20px;
+          height: 20px;
+          opacity: .75;
+          position: absolute;
+          width: 20px;
+        }
+        .time,
+        .timer {
+          display: block;
+          font-size: 1.5rem;
+          position: absolute;
+          top: 10px;
+        }
+        .time {
+          right: 10px;
+        }
+        .timer {
+          left: 10px;
+        }
+        .top {
+          position: relative;
+        }
         ::slotted(*) {
           display: none;
         }
@@ -71,11 +118,23 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
           display: block;
         }
       `}</style>,
-      <div class="container" onclick={handleClick} onkeydown={handleKeydown} tabindex="0" ref={handleRef}>
-        <Store id={id} name="currentSlide" value={actualSelected} />
-        <Progress current={actualSelected} total={children.length} />
-        <Notes class="notes" notes={notes} />
-        <slot  />
+      <div class="cursor" style={{ left: `${mouseX}px`, top: `${mouseY}px` }} />,
+      <div
+        class="container"
+        onmousemove={handleMousemove} 
+        onclick={handleClick} 
+        onkeydown={handleKeydown} 
+        tabindex="0" 
+        ref={handleRef}
+      >
+        <div class="top">
+          <Store id={id} name="currentSlide" value={actualSelected} />
+          <Progress current={actualSelected} total={slides.length} />
+          <Notes class="notes" notes={notes} />
+          <Timer class="timer" />
+          <Time class="time" slides={slides} />
+        </div>
+        <slot />
       </div>
     ];
   }

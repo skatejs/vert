@@ -7,8 +7,12 @@ export default define(class extends ComponentNext() {
     total: prop.number({ attribute: true, default: 1 })
   }
   renderCallback ({ current, total }) {
+    console.log(current, total);
     return [
       <style>{`
+        :host {
+          display: block;
+        }
         li {
           color: rgba(0, 0, 0, 0);
           flex-grow: 1;
@@ -28,7 +32,7 @@ export default define(class extends ComponentNext() {
         }
       `}</style>,
       <ul>
-        {[...Array(total)].map((n, i) =>
+        {Array.from(Array(total)).map((n, i) =>
           <li done={i < current}>Slide {i}</li>)}
       </ul>
     ];

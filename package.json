@@ -1,5 +1,5 @@
 {
-  "name": "vert",
+  "name": "@skatejs/vert",
   "version": "1.0.0",
   "description": "Describe vert here",
   "main": "lib/index.js",
