@@ -7,7 +7,6 @@ export default define(class extends ComponentNext() {
     total: prop.number({ attribute: true, default: 1 })
   }
   renderCallback ({ current, total }) {
-    console.log(current, total);
     return [
       <style>{`
         :host {

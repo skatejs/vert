@@ -7,7 +7,7 @@ export default define(class extends ComponentNext() {
   }
   renderCallback ({ slides }) {
     const time = slides.reduce((prev, next) => {
-      return prev + (next.textContent || '').split(' ').length / 2;
+      return prev + (next.textContent || '').split(' ').length / 3;
     }, 0);
     return (
       <span>{Math.round(time / 60)} min</span>

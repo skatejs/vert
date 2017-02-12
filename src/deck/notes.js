@@ -11,9 +11,7 @@ export default define(class extends ComponentNext() {
     return [
       <style>{`
         :host {
-          background-color: #FFD9CE;
           display: block;
-          padding: 0 20px;
         }
         ${styles}
       `}</style>

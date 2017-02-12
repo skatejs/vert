@@ -22,12 +22,17 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
   static props = {
     content: prop.string()
   }
+  css = `
+    h1 {
+      margin-top: -10px;
+    }
+  `
   childrenChangedCallback () {
     const { lines, notes } = parseNotesFromMarkdown(decode(this.innerHTML));
     const content = lines.join('\n');
     props(this, { content, notes });
   }
-  renderCallback ({ content }) {
-    return <Markdown>{content}</Markdown>;
+  renderCallback ({ content, css }) {
+    return <Markdown css={css}>{content}</Markdown>;
   }
 });

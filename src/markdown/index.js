@@ -22,15 +22,17 @@ export function parse (markdown) {
 export const Markdown = define(class extends ChildrenChanged(ComponentNext()) {
   static is = 'vert-markdown'
   static props = {
-    content: prop.string()
+    content: prop.string(),
+    css: prop.string()
   }
   childrenChangedCallback () {
     props(this, { content: parse(decode(this.innerHTML)) });
   }
-  renderCallback ({ content }) {
+  renderCallback ({ content, css }) {
     return [
-      <style>{styles}</style>,
       <style>{hlcss.toString()}</style>,
+      <style>{styles}</style>,
+      <style>{css}></style>,
       <div ref={e => (e.innerHTML = parse(content))} />
     ];
   }
