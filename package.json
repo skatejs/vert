@@ -30,5 +30,6 @@
   "author": "Trey Shugart <treshugart@gmail.com>",
   "homepage": "https://github.com/skatejs/vert",
   "license": "MIT",
-  "repository": "https://github.com/skatejs/vert"
+  "repository": "https://github.com/skatejs/vert",
+  "version": "0.0.0"
 }
