@@ -26,15 +26,17 @@ const App = define(class extends Component {
       `}</style>,
       <vert-route />,
       <vert-deck id='deck-1' findDecksToControl={findDecks}>
-        {Array.from(Array(20)).map((n, i) => <vert-slide>{`
+        {Array.from(Array(20)).map((n, i) => <div>{`
           # Slide ${i + 1}
 
-          ${Array.from(Array(20)).map((n, j) => {
-            return `Paragraph ${j + 1}.`;
+          ${Array.from(Array(20)).map(() => {
+            return `Paragraph ${Array.from(Array(20)).map(() => {
+              return `paragraph`;
+            }).join(' ')}.`;
           }).join('\n\n          ')}
 
           < Slide note ${i + 1}
-        `}</vert-slide>)}
+        `}</div>)}
       </vert-deck>,
       <vert-markdown>{`
         # Markdown

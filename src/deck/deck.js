@@ -3,6 +3,7 @@ import { define, h, prop, props } from 'skatejs';
 import { Store } from '../store';
 import Notes from './notes';
 import Progress from './progress';
+import Slide from './slide';
 import Time from './time';
 import Timer from './timer';
 import Window from '../window';
@@ -34,10 +35,7 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     decks: prop.array(),
     findDecksToControl: {},
     focused: prop.boolean({ attribute: true }),
-    hovered: prop.boolean({ attribute: true }),
     id: prop.string({ attribute: true }),
-    mouseX: prop.number(),
-    mouseY: prop.number(),
     speaker: prop.boolean({ attribute: true }),
     selected: prop.number({ attribute: true }),
     slides: prop.array(),
@@ -53,24 +51,31 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
   get style () {
     return `
       :host {
-        cursor: ${this.speaker ? 'default' : 'none'};
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
       }
       .container {
+        box-sizing: border-box;
         flex: 1;
         outline: none;
-        padding: 20px;
-        position: relative;
+        padding-top: 5px;
       }
-      .cursor {
-        background-color: black;
-        border-radius: 20px;
-        height: 20px;
-        opacity: .75;
-        position: absolute;
-        width: 20px;
+      .slide {
+        flex: 1;
+        transition: .1s;
+      }
+      ${Array.from(Array(this.slides.length)).map((n, i) => {
+        const num = i + 1;
+        return `
+          .slide:nth-child(${num}) {
+            transform: translateX(${(num - this.actualSelected) * 100}%);
+          }
+        `;
+      }).join('')}
+      .slides {
+        display: flex;
+        width: ${this.slides.length * 100}%;
       }
       .time,
       .timer {
@@ -80,20 +85,6 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       .time {
         float: right;
       }
-      ::slotted(*) {
-        box-sizing: border-box;
-        display: block;
-        position: absolute;
-        transition: .2s;
-        width: 100%;
-      }
-      ${Array.from(Array(this.slides.length)).map((n, i) => {
-        return `
-          ::slotted(:nth-child(${i + 1})) {
-            transform: translateX(${(this.actualSelected - (i + 1)) * 100}vw);
-          }
-        `;
-      }).join('')}
     `;
   }
   handleClick = e => {
@@ -109,16 +100,6 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     if (handler) {
       handler(this, e);
     }
-  }
-  handleMousemove = e => {
-    const { pageX: mouseX, pageY: mouseY } = e;
-    props(this, { mouseX, mouseY });
-  }
-  handleMouseout = e => {
-    props(this, { hovered: false });
-  }
-  handleMouseover = e => {
-    props(this, { hovered: true });
   }
   handleDone = w => {
     const { findDecksToControl } = this;
@@ -141,9 +122,6 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     handleClick,
     handleDone,
     handleKeydown,
-    handleMousemove,
-    handleMouseout,
-    handleMouseover,
     handleRef,
     hovered,
     id,
@@ -166,13 +144,9 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     return [
       <style>{this.style}</style>,
       win ? <Window done={handleDone} height={800} location="." width={500} /> : null,
-      ifNotSpeaker(hovered ? <div class="cursor" style={{ left: `${mouseX}px`, top: `${mouseY}px` }} /> : null),
       ifNotSpeaker(<Progress current={actualSelected} total={slides.length} />),
       <div
         class="container"
-        onmousemove={ifNotSpeaker(handleMousemove)}
-        onmouseout={handleMouseout}
-        onmouseover={handleMouseover}
         onclick={handleClick} 
         onkeydown={handleKeydown} 
         tabindex="0" 
@@ -185,7 +159,13 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
           <div>{actualSelected} / {slides.length}</div>,
           <Notes class="notes" notes={notes} />
         ])}
-        {ifNotSpeaker(<slot />)}
+        {ifNotSpeaker(
+          <div class="slides">
+            {this.slides.map((s, i) => (
+              <Slide class="slide" selected={i === actualSelected}>{s.textContent}</Slide>
+            ))}
+          </div>
+        )}
       </div>
     ];
   }
