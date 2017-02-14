@@ -56,6 +56,7 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         cursor: ${this.speaker ? 'default' : 'none'};
         display: flex;
         flex-direction: column;
+        overflow-x: hidden;
       }
       .container {
         flex: 1;
@@ -80,11 +81,19 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         float: right;
       }
       ::slotted(*) {
-        display: none;
-      }
-      ::slotted(:nth-child(${this.actualSelected})) {
+        box-sizing: border-box;
         display: block;
+        position: absolute;
+        transition: .2s;
+        width: 100%;
       }
+      ${Array.from(Array(this.slides.length)).map((n, i) => {
+        return `
+          ::slotted(:nth-child(${i + 1})) {
+            transform: translateX(${(this.actualSelected - (i + 1)) * 100}vw);
+          }
+        `;
+      }).join('')}
     `;
   }
   handleClick = e => {

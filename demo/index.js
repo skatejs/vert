@@ -26,25 +26,15 @@ const App = define(class extends Component {
       `}</style>,
       <vert-route />,
       <vert-deck id='deck-1' findDecksToControl={findDecks}>
-        {Array.from(Array(20)).map(n => <vert-slide># Slide {n}</vert-slide>)}
-      </vert-deck>,
-      <vert-deck speaker>
-        <vert-slide>{`
-          # First slide
+        {Array.from(Array(20)).map((n, i) => <vert-slide>{`
+          # Slide ${i + 1}
 
-          Some talk content.
+          ${Array.from(Array(20)).map((n, j) => {
+            return `Paragraph ${j + 1}.`;
+          }).join('\n\n          ')}
 
-          < Some notes
-        `}</vert-slide>
-        <vert-slide>{`
-          # Second slide
-
-          Some more content.
-
-          < Some more...
-
-          < notes
-        `}</vert-slide>
+          < Slide note ${i + 1}
+        `}</vert-slide>)}
       </vert-deck>,
       <vert-markdown>{`
         # Markdown
