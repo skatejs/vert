@@ -26,22 +26,7 @@ const App = define(class extends Component {
       `}</style>,
       <vert-route />,
       <vert-deck id='deck-1' findDecksToControl={findDecks}>
-        <vert-slide>{`
-          # First slide
-
-          Some talk content.
-
-          < Some notes
-        `}</vert-slide>
-        <vert-slide>{`
-          # Second slide
-
-          Some more content.
-
-          < Some more...
-
-          < notes
-        `}</vert-slide>
+        {Array.from(Array(20)).map(n => <vert-slide># Slide {n}</vert-slide>)}
       </vert-deck>,
       <vert-deck speaker>
         <vert-slide>{`

@@ -13,8 +13,10 @@ export default define(class extends ComponentNext() {
           display: block;
         }
         li {
+          border: 0;
           color: rgba(0, 0, 0, 0);
           flex-grow: 1;
+          font-size: 0;
           height: 5px;
           margin: 0;
           padding: 0;
@@ -23,11 +25,11 @@ export default define(class extends ComponentNext() {
           background-color: #4E598C;
         }
         ul {
+          border: 0;
           display: flex;
           list-style: none;
           margin: 0;
           padding: 0;
-          width: 100%;
         }
       `}</style>,
       <ul>

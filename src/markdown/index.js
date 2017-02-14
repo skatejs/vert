@@ -1,7 +1,7 @@
 import { ChildrenChanged, ComponentNext, decode } from '../_';
 import { define, h, prop, props } from 'skatejs';
 import hljs from 'highlight.js';
-import hlcss from 'highlight.js/styles/monokai.css';
+import hlcss from '!css-loader!highlight.js/styles/monokai.css';
 import marked from 'marked';
 import styles from './styles';
 
