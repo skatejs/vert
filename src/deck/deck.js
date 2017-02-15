@@ -77,19 +77,19 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       }
 
       .slide {
-        animation-duration: .3s;
-        background-color: #fff;
+        animation-duration: var(--vert-deck-slide-animation-duration, .3s);
         display: block;
-        z-index: 2;
       }
       .slides {
+        margin: var(--vert-deck-slide-margin, auto);
+        max-width: var(--vert-deck-slide-width, 800px);
+        padding: var(--vert-deck-slide-padding, 0);
         position: relative;
       }
 
       .fadeOut {
         position: absolute;
         top: -6px;
-        z-index: 1;
       }
 
       .time,
