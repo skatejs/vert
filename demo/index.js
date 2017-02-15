@@ -26,7 +26,7 @@ const App = define(class extends Component {
       `}</style>,
       <vert-route />,
       <vert-deck id='deck-1' findDecksToControl={findDecks}>
-        {Array.from(Array(20)).map((n, i) => <div>{`
+        {Array.from(Array(20)).map((n, i) => <vert-slide>{`
           # Slide ${i + 1}
 
           ${Array.from(Array(20)).map(() => {
@@ -36,7 +36,7 @@ const App = define(class extends Component {
           }).join('\n\n          ')}
 
           < Slide note ${i + 1}
-        `}</div>)}
+        `}</vert-slide>)}
       </vert-deck>,
       <vert-markdown>{`
         # Markdown

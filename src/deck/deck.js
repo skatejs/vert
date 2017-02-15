@@ -92,6 +92,10 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         top: -6px;
       }
 
+      .speaker {
+        margin: 20px;
+      }
+
       .time,
       .timer {
         display: inline-block;
@@ -170,12 +174,14 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         ref={e => (e.focus())}
       >
         <Store id={id} name="currentSlide" value={actualSelected} />
-        {ifSpeaker([
-          <Timer class="timer" />,
-          <Time class="time" slides={slides} />,
-          <div>{actualSelected} / {slides.length}</div>,
-          <Notes class="notes" notes={notes} />
-        ])}
+        {ifSpeaker(
+          <div class="speaker">
+            <Timer class="timer" />
+            <Time class="time" slides={slides} />
+            <div>{actualSelected} / {slides.length}</div>
+            <Notes class="notes" notes={notes} />
+          </div>
+        )}
         {ifNotSpeaker(
           <div class="slides">
             {this.slides.map((s, i) => {
