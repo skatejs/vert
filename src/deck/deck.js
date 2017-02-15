@@ -79,6 +79,8 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       .slide {
         animation-duration: var(--vert-deck-slide-animation-duration, .3s);
         display: block;
+        position: relative;
+        z-index: 1;
       }
       .slides {
         margin: var(--vert-deck-slide-margin, auto);
@@ -90,6 +92,7 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       .fadeOut {
         position: absolute;
         top: -6px;
+        z-index: 0;
       }
 
       .speaker {
