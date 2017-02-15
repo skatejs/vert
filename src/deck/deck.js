@@ -1,5 +1,7 @@
 import { ChildrenChanged, ComponentNext } from '../_';
 import { define, h, prop, props } from 'skatejs';
+import animatecss from '!css-loader!animate.css';
+
 import { Store } from '../store';
 import Notes from './notes';
 import Progress from './progress';
@@ -29,6 +31,15 @@ const keys = {
   }
 };
 
+function getAnimation (i, actualSelected, forward) {
+  const num = i + 1;
+  const isCurr = num === actualSelected;
+  if (isCurr) {
+    return `fadeIn slide${forward ? 'InRight' : 'InLeft'}`;
+  }
+  return 'fadeOut';
+}
+
 export default define(class extends ChildrenChanged(ComponentNext()) {
   static is = 'vert-deck';
   static props = {
@@ -50,33 +61,37 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
   }
   get style () {
     return `
+      ${animatecss}
+
       :host {
         display: flex;
         flex-direction: column;
         overflow-x: hidden;
       }
+
       .container {
         box-sizing: border-box;
         flex: 1;
         outline: none;
         padding-top: 5px;
       }
+
       .slide {
-        flex: 1;
-        transition: .1s;
+        animation-duration: .3s;
+        background-color: #fff;
+        display: block;
+        z-index: 2;
       }
-      ${Array.from(Array(this.slides.length)).map((n, i) => {
-        const num = i + 1;
-        return `
-          .slide:nth-child(${num}) {
-            transform: translateX(${(num - this.actualSelected) * 100}%);
-          }
-        `;
-      }).join('')}
       .slides {
-        display: flex;
-        width: ${this.slides.length * 100}%;
+        position: relative;
       }
+
+      .fadeOut {
+        position: absolute;
+        top: -6px;
+        z-index: 1;
+      }
+
       .time,
       .timer {
         display: inline-block;
@@ -114,10 +129,12 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
   childrenChangedCallback () {
     props(this, { slides: Array.from(this.children) });
   }
-  propsChangedCallback ({ selected }) {
+  propsChangedCallback ({ selected }, { selected: prevSelected } = {}) {
+    this._forward = prevSelected < selected;
     this.decks.forEach(d => props(d, { selected }));
   }
   renderCallback ({
+    _forward,
     actualSelected,
     handleClick,
     handleDone,
@@ -161,9 +178,10 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         ])}
         {ifNotSpeaker(
           <div class="slides">
-            {this.slides.map((s, i) => (
-              <Slide class="slide" selected={i === actualSelected}>{s.textContent}</Slide>
-            ))}
+            {this.slides.map((s, i) => {
+              const animation = getAnimation(i, actualSelected, _forward);
+              return <Slide class={`slide animated ${animation}`} ref={e => (e.innerHTML = s.innerHTML)} />
+            })}
           </div>
         )}
       </div>
