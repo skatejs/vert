@@ -91,7 +91,9 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
 
       .fadeOut {
         position: absolute;
-        top: -6px;
+        top: 0;
+        transition: top var(--vert-deck-slide-animation-duration, .3s);
+        width: 100%;
         z-index: 0;
       }
 
