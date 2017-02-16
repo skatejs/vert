@@ -13,4 +13,4 @@ module.exports = {
       ['transform-react-jsx', { pragma: 'h' }]
     ]
   }
-}
+};
