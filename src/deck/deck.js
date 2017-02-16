@@ -49,6 +49,7 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     id: prop.string({ attribute: true }),
     speaker: prop.boolean({ attribute: true }),
     selected: prop.number({ attribute: true }),
+    slideMarkdownCss: prop.string({ attribute: true }),
     slides: prop.array(),
     win: prop.boolean({ attribute: true })
   }
@@ -153,6 +154,7 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     id,
     mouseX,
     mouseY,
+    slideMarkdownCss,
     slides,
     speaker,
     win
@@ -191,7 +193,11 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
           <div class="slides">
             {this.slides.map((s, i) => {
               const animation = getAnimation(i, actualSelected, _forward);
-              return <Slide class={`slide animated ${animation}`} ref={e => (e.innerHTML = s.innerHTML)} />
+              return <Slide
+                class={`slide animated ${animation}`}
+                markdownCss={slideMarkdownCss}
+                ref={e => (e.innerHTML = s.innerHTML)}
+              />
             })}
           </div>
         )}

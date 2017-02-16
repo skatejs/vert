@@ -20,19 +20,15 @@ function parseNotesFromMarkdown (markdown) {
 export default define(class extends ChildrenChanged(ComponentNext()) {
   static is = 'vert-slide'
   static props = {
-    content: prop.string()
+    content: prop.string(),
+    markdownCss: prop.string()
   }
-  css = `
-    h1 {
-      margin-top: -10px;
-    }
-  `
   childrenChangedCallback () {
     const { lines, notes } = parseNotesFromMarkdown(decode(this.innerHTML));
     const content = lines.join('\n');
     props(this, { content, notes });
   }
-  renderCallback ({ content, css }) {
-    return <Markdown css={css}>{content}</Markdown>;
+  renderCallback ({ content, markdownCss }) {
+    return <Markdown css={markdownCss}>{content}</Markdown>;
   }
 });

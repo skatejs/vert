@@ -25,7 +25,15 @@ const App = define(class extends Component {
         }
       `}</style>,
       <vert-route />,
-      <vert-deck id='deck-1' findDecksToControl={findDecks}>
+      <vert-deck
+        id='deck-1'
+        findDecksToControl={findDecks}
+        slideMarkdownCss={`
+          h1 {
+            text-align: center;
+          }
+        `}
+      >
         {Array.from(Array(20)).map((n, i) => <vert-slide>{`
           # Slide ${i + 1}
 
