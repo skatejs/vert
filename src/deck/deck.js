@@ -35,7 +35,7 @@ function getAnimation (i, actualSelected, forward) {
   const num = i + 1;
   const isCurr = num === actualSelected;
   if (isCurr) {
-    return `fadeIn slide${forward ? 'InRight' : 'InLeft'}`;
+    return `fadeIn fadeOut slide${forward ? 'InRight' : 'InLeft'}`;
   }
   return 'fadeOut';
 }
@@ -66,6 +66,7 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       :host {
         display: flex;
         flex-direction: column;
+        font-size: 1.4rem;
         overflow-x: hidden;
       }
 
@@ -92,7 +93,6 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       .fadeOut {
         position: absolute;
         top: 0;
-        transition: top var(--vert-deck-slide-animation-duration, .3s);
         width: 100%;
         z-index: 0;
       }
