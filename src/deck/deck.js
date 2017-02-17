@@ -37,7 +37,7 @@ function getAnimation (i, actualSelected, forward) {
   if (isCurr) {
     return `fadeIn fadeOut slide${forward ? 'InRight' : 'InLeft'}`;
   }
-  return 'fadeOut';
+  return 'fadeOut hidden';
 }
 
 export default define(class extends ChildrenChanged(ComponentNext()) {
@@ -68,7 +68,6 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         display: flex;
         flex-direction: column;
         font-size: 1.4rem;
-        overflow-x: hidden;
       }
 
       .container {
@@ -84,6 +83,12 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         position: relative;
         z-index: 1;
       }
+
+      .slide-container {
+        height: 100%;
+        overflow-x: hidden;
+      }
+
       .slides {
         margin: var(--vert-deck-slide-margin, auto);
         max-width: var(--vert-deck-slide-width, 800px);
@@ -95,6 +100,9 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
         position: absolute;
         top: 0;
         width: 100%;
+      }
+
+      .hidden {
         z-index: 0;
       }
 
@@ -190,15 +198,17 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
           </div>
         )}
         {ifNotSpeaker(
-          <div class="slides">
-            {this.slides.map((s, i) => {
-              const animation = getAnimation(i, actualSelected, _forward);
-              return <Slide
-                class={`slide animated ${animation}`}
-                markdownCss={slideMarkdownCss}
-                ref={e => (e.innerHTML = s.innerHTML)}
-              />
-            })}
+          <div class="slide-container">
+            <div class="slides">
+              {this.slides.map((s, i) => {
+                const animation = getAnimation(i, actualSelected, _forward);
+                return <Slide
+                  class={`slide animated ${animation}`}
+                  markdownCss={slideMarkdownCss}
+                  ref={e => (e.innerHTML = s.innerHTML)}
+                />
+              })}
+            </div>
           </div>
         )}
       </div>
