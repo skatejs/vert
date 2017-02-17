@@ -60,21 +60,21 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     const { actualSelected, slides } = this;
     return slides[actualSelected - 1];
   }
-  get style () {
+  get css () {
     return `
       ${animatecss}
 
       :host {
         display: flex;
         flex-direction: column;
-        font-size: 1.4rem;
+        font-size: var(--vert-deck-font-size, 1.5rem);
       }
 
       .container {
         box-sizing: border-box;
         flex: 1;
-        outline: none;
-        padding-top: 5px;
+        outline: var(--vert-deck-outline, none);
+        padding-top: var(--vert-deck-padding, 0);
       }
 
       .slide {
@@ -107,13 +107,13 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
       }
 
       .speaker {
-        margin: 20px;
+        margin: var(--vert-deck-speaker-margin, 20px);
       }
 
       .time,
       .timer {
         display: inline-block;
-        font-size: 1.5rem;
+        font-size: var(--vert-deck-speaker-progress-font-size, 2rem);
       }
       .time {
         float: right;
@@ -178,7 +178,7 @@ export default define(class extends ChildrenChanged(ComponentNext()) {
     }
 
     return [
-      <style>{this.style}</style>,
+      <style>{this.css}</style>,
       win ? <Window done={handleDone} height={800} location="." width={500} /> : null,
       ifNotSpeaker(<Progress current={actualSelected} total={slides.length} />),
       <div
